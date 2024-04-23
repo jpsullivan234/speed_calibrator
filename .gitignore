@@ -1,0 +1,8 @@
+# idk wtf this does but get it outta here
+/main.dSYM
+
+/.vscode
+
+# Ignore compiled executables
+*.out
+*.exe
