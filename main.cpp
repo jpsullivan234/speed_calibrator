@@ -1,3 +1,4 @@
+#include "Calibrator.hpp"
 #include <iostream>
 using namespace std;
 
@@ -6,8 +7,10 @@ using namespace std;
 // create a data structure to store the data
 
 
+
+Calibrator gpsData("RTK_GPS.txt");
+Calibrator watchData("SmartWatch.txt");
 int main(){
-    cout<<"Hello World!"<<endl;
     return 0;
 }
 
