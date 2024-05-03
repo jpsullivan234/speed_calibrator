@@ -14,17 +14,19 @@ Calibrator::Calibrator(const char* filename){
     double val = 0;                     // Temporarily store each data value
     double correct_val = 0;
 
+    int n = 1;
+
     ifstream dataFile(filename);        // Create a file obj to get data
-    while (dataFile.good()){
-        for (int i = 1; i < 100; i++){  // Iterate through each data element
-            dataFile>>val;              // Input data element into the 'val' section of the struct
-            _data[i].val = val;         // Store the raw data into 'val' of the array. The 'error' part of the struct is still 0.
-            _data[i].error = 0;         // Error is initially set to 0 for all
+    while (n < 100 && dataFile>>val){   // Iterate through each data element
+            _data[n].val = val;         // Store the raw data into 'val' of the array. The 'error' part of the struct is still 0.
+            _data[n].error = 0;         // Error is initially set to 0 for all
             sum_x += val;               // update sums
-            sum_xy += val*i;
-        }
+            sum_xy += val*n;
+        n++;
     }
     dataFile.close();
+
+    for (int i = 1; i < 100; i++) cout<<_data[i].val<<endl;
 
     // Calculate the linear regression of the data
     _m = (99 * (sum_xy - (sum_x * sum_y) )) / (0.1);    // calculate the slope of the regression

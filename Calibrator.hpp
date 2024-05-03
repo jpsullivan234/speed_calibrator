@@ -15,7 +15,7 @@ class Calibrator{
         
     public:
         Calibrator(const char* fileName);    // Constructor
-        ~Calibrator();                 // Destructor
+        //~Calibrator();                 // Destructor
 
         void findErrors();             // Prints all possible erroneous data values
         void getSpeed(int time);       // Prints a speed at specified time
