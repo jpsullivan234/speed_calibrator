@@ -5,11 +5,13 @@ class Calibrator{
 
     private:
         struct Pair{            // 'pair' is a data type that holds a corrected data value and the error, if there is any
+            int index;
             double val;
-            double error;
+
         };
 
-        Pair _data[99];         // Stores (corrected data, error) pairs
+        double _data[99];       // Stores corrected data
+        vector<Pair> errors;
         double _m;              // Stores the slope of the data
         double _b;              // Stores the y-intercept of the data (will be close to 0)
         
