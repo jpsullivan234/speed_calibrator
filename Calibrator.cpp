@@ -39,6 +39,11 @@ Calibrator::Calibrator(const char* filename):name(filename){
     dataFile.close();
     slope = sum_dx/99;
     offset = sum_offset/99;
+
+    /* Cacluate the actual speed at the error points*/
+    for (int i = 0; i < errors.size(); i++){
+        data[errors[i].index] = errors[i].index * slope + offset;
+    }
 };
 
 Calibrator::~Calibrator(){
