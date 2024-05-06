@@ -12,7 +12,7 @@ class Calibrator{
 
         };
         const char * name;
-        double data[99];            // Stores corrected data
+        double data[100];            // Stores corrected data
         double slope;               // Stores the slope of the data
         double offset;              // Stores the y-intercept of the data (will be close to 0)
 

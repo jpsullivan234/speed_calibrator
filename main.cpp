@@ -12,10 +12,13 @@ using namespace std;
 Calibrator gpsData("RTK_GPS.txt");
 Calibrator watchData("SmartWatch.txt");
 int main(){
-    gpsData.findErrors();
-    watchData.findErrors();
+    //gpsData.findErrors();
+    //watchData.findErrors();
 
-    gpsData.getSpeed(23);
+    //gpsData.getSpeed(23);
+    //watchData.getSpeed(47);
+
+    watchData.showAllData();
     return 0;
 }
 

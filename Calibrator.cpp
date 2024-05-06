@@ -39,10 +39,9 @@ Calibrator::Calibrator(const char* filename):name(filename){
     dataFile.close();
     slope = sum_dx/99;
     offset = sum_offset/99;
-
     /* Cacluate the actual speed at the error points*/
     for (int i = 0; i < errors.size(); i++){
-        data[errors[i].index] = errors[i].index * slope + offset;
+        data[errors[i].index] = errors[i].index * slope + offset;   // calculate actual speed using offset and slope
     }
 };
 
@@ -54,13 +53,20 @@ void Calibrator::findErrors(){
     if (!errors.empty()){
         cout<<"\nPrinting Errors for "<<name<<":"<<endl;
         for (int i = 0; i < errors.size(); i++){
-            cout<<"     Error "<<i+1<<": Index = "<<errors[i].index<<" | Value = "<<errors[i].val<<endl;
+            cout<<"     Error "<<i+1<<": Time = "<<errors[i].index<<"s | Speed = "<<errors[i].val<<"m/s"<<endl;
         }
     } else cout<<"\n No errors were found for "<<name<<endl;
 }
 
 void Calibrator::getSpeed(int time){
     if (0 < time && time < 99){
-         cout<<"The speed at "<<time<< " seconds is: "<<data[time]<<" m/s"<<endl;
-    } else cout<<"ERROR: no data exists at the specified time.";
+         cout<<"\nThe speed at "<<time<< "s is: "<<data[time]<<"m/s"<<endl;
+    } else cout<<"\nERROR: no data exists at the specified time.";
+}
+
+void Calibrator::showAllData(){
+    cout<<"\nPrinting All Data for "<<name<<":"<<endl;
+    for (int i = 0; i < 100; i++){
+        cout<<"     Time: "<<i<<"s | Speed: "<<data[i]<<"m/s"<<endl;
+    }
 }
