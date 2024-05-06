@@ -12,7 +12,8 @@ using namespace std;
 Calibrator gpsData("RTK_GPS.txt");
 Calibrator watchData("SmartWatch.txt");
 int main(){
-    cout<<"Hello!"<<endl;
+    gpsData.findErrors();
+    watchData.findErrors();
     return 0;
 }
 
