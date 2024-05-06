@@ -10,7 +10,7 @@ using namespace std;
 
 
 Calibrator gpsData("RTK_GPS.txt");
-Calibrator watchData("SmartWatch.txt");
+//Calibrator watchData("SmartWatch.txt");
 int main(){
     return 0;
 }

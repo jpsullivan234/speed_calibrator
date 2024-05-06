@@ -5,58 +5,52 @@
 using namespace std;
 
 Calibrator::Calibrator(const char* filename){
-    _data[0] = 0;
-    _data[0] = 0;   // Assuming speed at 0 seconds is 0 m/s
+    data[0] = 0;                        // Assuming speed at 0 seconds is 0 m/s
+    data[0] = 0;
 
     double stdev_x = 0.316227766;       // Variance is known to be 0.1; sqrt(0.1) = stdev
-    double sum_dx = 0;
-    double sum_b = 0;
-    double n_slope = 0;
-    double val = 0;                         // Temporarily store each data value
-    double correct_val = 0;
+    double sum_dx = 0;                  // Sum of the difference (slope) between each point
+    double sum_offset = 0;              // Sum of the offset of each slope (y-intercept)
+    double n_slope = 0;                 // Stores individual slope values for each point
+    double val = 0;                     // Temporarily store each raw data value
+    double correct_val = 0;             // Stores the calculated correct data value for each point
+    Pair n_error;                       // Stores (index, error) pairs for each point containing error
 
+    /* Get raw data and separate error points*/
+    ifstream dataFile(filename);                        // Create a file obj to get data
 
-    /* Get raw data and calculate acceleration*/
     int n = 1;
-    ifstream dataFile(filename);            // Create a file obj to get data
-    while (n < 100 && dataFile>>val){       // Iterate through each data element
+    while (n < 100 && dataFile>>val){                   // Iterate through each data element
+        n_slope = (val - data[n-1]);                    // Calculate the slope between val and last val
 
-        n_slope = (val - _data[n-1]);       // calculate the slope between val and last val
         cout<<"n = "<<n<<" | Slope = "<<n_slope;
-        if (n_slope > 1 + 2*stdev_x || n_slope < 1 - 2*stdev_x){    // If the slope is outside of 2 standard deviations from 1, it is error
-            cout<<"| Error"<<endl;
-            _data[n] = n;                   // save 'n' as the value
-            errors.push_back({n,val});      // save the index and raw value of the error
+
+        if (n_slope > 1 + 2*stdev_x || n_slope < 1 - 2*stdev_x){    // If the slope is outside of 2 standard deviations from 1, it is erroneous
+
+            correct_val = n*sum_dx/(n-1) + sum_offset/(n-1);        // Calculate what the data point should be based on the averages so far
+            data[n] = correct_val;                      // Save the correct value
+
+            cout<<"\nn_slope = "<<sum_dx/(n-1)<<endl;
+            cout<<"| Error! Correct val = "<<correct_val<<endl;
+
+            n_error = (Pair){.index = n, .val = val};   // Save the current (index,val) pair of the erroneous point
+            errors.push_back(n_error);
             
-            // dont need to update sum_b
-            sum_dx++;
+            sum_offset += n - (sum_dx/(n-1) * val);     // Keep track of the y-intercepts 
+            sum_dx += sum_dx/(n-1);                     // Update the sum of slopes
 
-        } else {
+        } else {                                        // This case means the point is accurate
             cout<<endl;
-            _data[n].val = val;             // Store the raw data into 'val' of the array. The 'error' part of the struct is still 0.
-            _data[n].error = 0;             // Error is initially set to 0 for all
 
-            sum_b += n - (n_slope * val);   // Keep track of the y-intercepts 
-            sum_dx += n_slope;
+            data[n] = val;                              // Store the raw data
+            
+            sum_offset += n - (n_slope * val);          // Keep track of the y-intercepts 
+            sum_dx += n_slope;                          // Update the sum of slopes
         }
         n++;
     }
     dataFile.close();
 
+    cout<<"Eqn is: y = "<<sum_dx/99<<"x + "<<sum_offset/99<<endl;
 
-    /* Calculate the average slope and average offset */
-    _m = sum_dx/99;
-    _b = sum_b / 99;
-
-    cout<<"Eqn is: y = "<<_m<<"x + "<<_b<<endl;
-
-    /* Calculate accurate data values and errors */
-    for (int i = 0; i < 100; i++){
-        correct_val = _m * i + _b;                              // calculate the correct value using the actual acceleration
-        
-        if ( abs( correct_val - _data[i].val ) > stdev_x){      // If the data is outside of the standard deviation, find the error
-            _data[i].error = abs( correct_val - _data[i].val ); // Add the error to this 'pair' in the array
-            _data[i].val = correct_val;
-        }
-    }
 };

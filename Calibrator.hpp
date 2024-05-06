@@ -1,5 +1,7 @@
 #ifndef Calibrator_hpp
 #define Calibrator_hpp
+#include <vector>
+using namespace std;
 
 class Calibrator{
 
@@ -10,11 +12,11 @@ class Calibrator{
 
         };
 
-        double _data[99];       // Stores corrected data
+        double data[99];       // Stores corrected data
         vector<Pair> errors;
-        double _m;              // Stores the slope of the data
-        double _b;              // Stores the y-intercept of the data (will be close to 0)
-        
+        double slope;              // Stores the slope of the data
+        double offset;              // Stores the y-intercept of the data (will be close to 0)
+
     public:
         Calibrator(const char* fileName);    // Constructor
         //~Calibrator();                 // Destructor
