@@ -14,6 +14,8 @@ Calibrator watchData("SmartWatch.txt");
 int main(){
     gpsData.findErrors();
     watchData.findErrors();
+
+    gpsData.getSpeed(23);
     return 0;
 }
 

@@ -46,8 +46,16 @@ Calibrator::~Calibrator(){
 };
 
 void Calibrator::findErrors(){
-    cout<<"\nPrinting Errors for "<<name<<":"<<endl;
-    for (int i = 0; i < errors.size(); i++){
-        cout<<"     Error "<<i+1<<": Index = "<<errors[i].index<<" | Value = "<<errors[i].val<<endl;
-    }
+    if (!errors.empty()){
+        cout<<"\nPrinting Errors for "<<name<<":"<<endl;
+        for (int i = 0; i < errors.size(); i++){
+            cout<<"     Error "<<i+1<<": Index = "<<errors[i].index<<" | Value = "<<errors[i].val<<endl;
+        }
+    } else cout<<"\n No errors were found for "<<name<<endl;
+}
+
+void Calibrator::getSpeed(int time){
+    if (0 < time && time < 99){
+         cout<<"The speed at "<<time<< " seconds is: "<<data[time]<<" m/s"<<endl;
+    } else cout<<"ERROR: no data exists at the specified time.";
 }
