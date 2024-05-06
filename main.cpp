@@ -18,7 +18,10 @@ int main(){
     //gpsData.getSpeed(23);
     //watchData.getSpeed(47);
 
-    watchData.showAllData();
+    //watchData.showAllData();
+    watchData.search(0.9603606793058179);
+    watchData.search(2.05);
+    watchData.search(3.9);
     return 0;
 }
 

@@ -26,6 +26,7 @@ class Calibrator{
         void getSpeed(int time);       // Prints a speed at specified time
         void showAllData();            // Prints entire dataset
         void search(double speed);     // Search for a specified speed, print corresponding time if found
+        int find_index(double val);    // Finds the closest index for a speed value using the slope and offset
 };
 
 #endif /* Calibrator_hpp*/

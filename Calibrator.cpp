@@ -70,3 +70,22 @@ void Calibrator::showAllData(){
         cout<<"     Time: "<<i<<"s | Speed: "<<data[i]<<"m/s"<<endl;
     }
 }
+
+void Calibrator::search(double speed){
+    int index = find_index(speed);
+
+    float err1, err2, err3;                 // Calculate the error at the 3 closest indices
+    err1 = abs(speed - data[index - 1]);
+    err2 = abs(speed - data[index]);
+    err3 = abs(speed - data[index + 1]);
+
+    if (err1 < err2) index -= 1;            // Find the lowest error. If both statements fail, the original index is the closest
+    else if (err3 < err2) index += 1;
+    
+    if (data[index] == speed) cout<< "Exact match found! Corresponding index is: "<<index<<endl;
+    else cout<<"No exact matches found. Closest speed is: "<<data[index]<<"m/s at index: "<<index<<endl;
+}
+
+int Calibrator::find_index(double val){
+    return (val - offset)/slope;
+}
