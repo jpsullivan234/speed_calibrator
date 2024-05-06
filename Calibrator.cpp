@@ -24,19 +24,16 @@ Calibrator::Calibrator(const char* filename):name(filename){
         n_slope = (val - data[n-1]);                    // Calculate the slope between current val and last val
 
         cout<<"n = "<<n<<" | Slope = "<<n_slope;
-
         if (n_slope > 1 + 2*stdev_x || n_slope < 1 - 2*stdev_x){    // If the slope is outside of 2 standard deviations from 1, it is an error
 
-            correct_val = n*sum_dx/(n-1) + sum_offset/(n-1);        // Calculate what the data point should be based on the averages so far
+            correct_val = n;                            // Assuming the correct slope is roughly 1, the correct data will be roughly n
             data[n] = correct_val;                      // Save the correct value
 
-            cout<<"| Error! n_slope = "<<sum_dx/(n-1)<<endl;
+            cout<<"| Error!"<<endl;
 
-            n_error = (Pair){.index = n, .val = val};   // Save the current (index,val) pair of the erroneous point
+            n_error = (Pair){.index = n, .val = val};   // Save the current (index,val) pair of the erroneous point in the vector
             errors.emplace_back(n_error);
-
-            sum_offset += n - (sum_dx/(n-1) * val);     // Keep track of the y-intercepts 
-            sum_dx += sum_dx/(n-1);                     // Update the sum of slopes
+            sum_dx ++;                                  // Update the sum of slopes
 
         } else {                                        // This case means the point is accurate
             cout<<endl;
