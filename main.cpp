@@ -10,8 +10,9 @@ using namespace std;
 
 
 Calibrator gpsData("RTK_GPS.txt");
-//Calibrator watchData("SmartWatch.txt");
+Calibrator watchData("SmartWatch.txt");
 int main(){
+    cout<<"Hello!"<<endl;
     return 0;
 }
 

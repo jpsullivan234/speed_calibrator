@@ -6,20 +6,21 @@ using namespace std;
 class Calibrator{
 
     private:
-        struct Pair{            // 'pair' is a data type that holds a corrected data value and the error, if there is any
+        struct Pair{                // 'pair' is a data type that holds a corrected data value and the error, if there is any
             int index;
             double val;
 
         };
-
-        double data[99];       // Stores corrected data
-        vector<Pair> errors;
-        double slope;              // Stores the slope of the data
+        const char * name;
+        double data[99];            // Stores corrected data
+        double slope;               // Stores the slope of the data
         double offset;              // Stores the y-intercept of the data (will be close to 0)
 
     public:
+        vector<Pair> errors;
+
         Calibrator(const char* fileName);    // Constructor
-        //~Calibrator();                 // Destructor
+        ~Calibrator();                       // Destructor
 
         void findErrors();             // Prints all possible erroneous data values
         void getSpeed(int time);       // Prints a speed at specified time

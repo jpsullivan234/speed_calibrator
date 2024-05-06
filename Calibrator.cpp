@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 
-Calibrator::Calibrator(const char* filename){
+Calibrator::Calibrator(const char* filename):name(filename){
     data[0] = 0;                        // Assuming speed at 0 seconds is 0 m/s
     data[0] = 0;
 
@@ -21,21 +21,20 @@ Calibrator::Calibrator(const char* filename){
 
     int n = 1;
     while (n < 100 && dataFile>>val){                   // Iterate through each data element
-        n_slope = (val - data[n-1]);                    // Calculate the slope between val and last val
+        n_slope = (val - data[n-1]);                    // Calculate the slope between current val and last val
 
         cout<<"n = "<<n<<" | Slope = "<<n_slope;
 
-        if (n_slope > 1 + 2*stdev_x || n_slope < 1 - 2*stdev_x){    // If the slope is outside of 2 standard deviations from 1, it is erroneous
+        if (n_slope > 1 + 2*stdev_x || n_slope < 1 - 2*stdev_x){    // If the slope is outside of 2 standard deviations from 1, it is an error
 
             correct_val = n*sum_dx/(n-1) + sum_offset/(n-1);        // Calculate what the data point should be based on the averages so far
             data[n] = correct_val;                      // Save the correct value
 
-            cout<<"\nn_slope = "<<sum_dx/(n-1)<<endl;
-            cout<<"| Error! Correct val = "<<correct_val<<endl;
+            cout<<"| Error! n_slope = "<<sum_dx/(n-1)<<endl;
 
             n_error = (Pair){.index = n, .val = val};   // Save the current (index,val) pair of the erroneous point
-            errors.push_back(n_error);
-            
+            errors.emplace_back(n_error);
+
             sum_offset += n - (sum_dx/(n-1) * val);     // Keep track of the y-intercepts 
             sum_dx += sum_dx/(n-1);                     // Update the sum of slopes
 
@@ -50,7 +49,13 @@ Calibrator::Calibrator(const char* filename){
         n++;
     }
     dataFile.close();
-
     cout<<"Eqn is: y = "<<sum_dx/99<<"x + "<<sum_offset/99<<endl;
 
+    for (int i = 0; i < errors.size(); i++){
+        cout<<errors[i].index<<endl;
+    }
+};
+
+Calibrator::~Calibrator(){
+    cout<<"\n===== All data has been deleted for "<<name<<" ====="<<endl;
 };
