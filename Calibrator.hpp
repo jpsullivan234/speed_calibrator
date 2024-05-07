@@ -11,12 +11,12 @@ class Calibrator{
             double val;
 
         };
-        const char * name;
         double data[100];            // Stores corrected data
         double slope;               // Stores the slope of the data
         double offset;              // Stores the y-intercept of the data (will be close to 0)
 
     public:
+        const char * name;
         vector<Pair> errors;
 
         Calibrator(const char* fileName);    // Constructor
@@ -26,7 +26,7 @@ class Calibrator{
         void getSpeed(int time);       // Prints a speed at specified time
         void showAllData();            // Prints entire dataset
         void search(double speed);     // Search for a specified speed, print corresponding time if found
-        int find_index(double val);    // Finds the closest index for a speed value using the slope and offset
+        int find_index(double val);    // (helper function) Finds the closest index for a speed value using the slope and offset
 };
 
 #endif /* Calibrator_hpp*/
