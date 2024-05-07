@@ -1,5 +1,4 @@
 #include "Calibrator.hpp"
-#include "Calibrator.cpp"
 #include <iostream>
 using namespace std;
 

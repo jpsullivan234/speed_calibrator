@@ -49,8 +49,6 @@ Calibrator::Calibrator(const char* filename):name(filename){
     for (int i = 1; i < 100; i++) data[i] -= offset;                // the average offset is approx. the noise in the data. No noise at 0, however
 };
 
-Calibrator::Calibrator(){};
-
 Calibrator::~Calibrator(){
     cout<<"*** All data has been deleted for "<<name<<" ***"<<endl;
 };

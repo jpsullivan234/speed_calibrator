@@ -20,7 +20,6 @@ class Calibrator{
         vector<Pair> errors;
 
         Calibrator(const char* fileName);    // Constructor
-        Calibrator();                        // Second constructor for initializing without file
         ~Calibrator();                       // Destructor
 
         void findErrors();             // Prints all possible erroneous data values

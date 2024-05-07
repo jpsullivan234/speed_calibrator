@@ -6,3 +6,7 @@
 # Ignore compiled executables
 *.out
 *.exe
+*.o
+*.pdf
+*.zip
+*.docx
