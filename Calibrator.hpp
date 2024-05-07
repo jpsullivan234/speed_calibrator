@@ -20,13 +20,15 @@ class Calibrator{
         vector<Pair> errors;
 
         Calibrator(const char* fileName);    // Constructor
+        Calibrator();                        // Second constructor for initializing without file
         ~Calibrator();                       // Destructor
 
         void findErrors();             // Prints all possible erroneous data values
         void getSpeed(int time);       // Prints a speed at specified time
         void showAllData();            // Prints entire dataset
         void search(double speed);     // Search for a specified speed, print corresponding time if found
-        int find_index(double val);    // (helper function) Finds the closest index for a speed value using the slope and offset
+        void getAccel();               // returns the average accelaration of the data
+        void getNoise();               // returns the amount of noise in the data
 };
 
 #endif /* Calibrator_hpp*/

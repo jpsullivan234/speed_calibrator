@@ -40,15 +40,19 @@ Calibrator::Calibrator(const char* filename):name(filename){
     slope = sum_dx/99;
     offset = sum_offset/99;
 
-    //*** Need to remove the noise from all points
     /* Cacluate the actual speed at the error points*/
     for (int i = 0; i < errors.size(); i++){
         data[errors[i].index] = errors[i].index * slope + offset;   // calculate actual speed using offset and slope
     }
+
+    /* Remove the noise from all data points*/
+    for (int i = 1; i < 100; i++) data[i] -= offset;                // the average offset is approx. the noise in the data. No noise at 0, however
 };
 
+Calibrator::Calibrator(){};
+
 Calibrator::~Calibrator(){
-    cout<<"\n===== All data has been deleted for "<<name<<" ====="<<endl;
+    cout<<"*** All data has been deleted for "<<name<<" ***"<<endl;
 };
 
 void Calibrator::findErrors(){
@@ -74,20 +78,20 @@ void Calibrator::showAllData(){
 }
 
 void Calibrator::search(double speed){
-    int index = find_index(speed);
+    int index = speed/slope;                        // the data is set up like a Hash Table; index * slope = speed for every point
+    if (int(speed/slope + 0.5) != index) index++;   // casting always rounds down; this fixes that
 
-    float err1, err2, err3;                 // Calculate the error at the 3 closest indices
-    err1 = abs(speed - data[index - 1]);
-    err2 = abs(speed - data[index]);
-    err3 = abs(speed - data[index + 1]);
+    if (index > 99) index = 99;                    // check the bounds
+    if (index < 0) index = 0;
 
-    if (err1 < err2) index -= 1;            // Find the lowest error. If both statements fail, the original index is the closest
-    else if (err3 < err2) index += 1;
-    
-    if (data[index] == speed) cout<< "Exact match found! Corresponding index is: "<<index<<endl;
+    if (abs(speed - data[index]) <= 0.1) cout<< "Exact match found! Corresponding index is: "<<index<<endl;  // If speed is less than 0.1 away, it is classified as exact
     else cout<<"No exact matches found. Closest speed is: "<<data[index]<<"m/s at index: "<<index<<endl;
 }
 
-int Calibrator::find_index(double val){
-    return (val - offset)/slope;
+void Calibrator::getAccel(){
+    cout<<"The average accelaration is "<<slope<<" m/s^2"<<endl;
+}
+
+void Calibrator::getNoise(){
+    cout<<"The average noise in the data is "<<offset<<" m/s"<<endl;
 }
