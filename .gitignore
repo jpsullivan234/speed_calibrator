@@ -3,6 +3,9 @@
 
 /.vscode
 
+/.DS_Store
+run
+
 # Ignore compiled executables
 *.out
 *.exe
